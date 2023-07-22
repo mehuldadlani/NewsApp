@@ -1,4 +1,4 @@
-class Article {
+class ArticleDataModel {
   Source source;
   String? author;
   String title;
@@ -7,7 +7,7 @@ class Article {
   String? urlToImage;
   String publishedAt;
   String content;
-  Article({
+  ArticleDataModel({
     required this.source,
     this.author,
     required this.title,
@@ -18,8 +18,8 @@ class Article {
     required this.content,
   });
 
-  factory Article.fromJson(Map<String, dynamic> json) {
-    return Article(
+  factory ArticleDataModel.fromJson(Map<String, dynamic> json) {
+    return ArticleDataModel(
       source: Source.fromJson(json['source']),
       author: json['author'] as String?,
       title: json['title'] as String,
