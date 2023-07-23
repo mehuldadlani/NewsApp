@@ -1,19 +1,20 @@
 class ArticleDataModel {
   Source source;
-  String? author;
+  String author;
   String title;
   String description;
   String url;
-  String? urlToImage;
+  String urlToImage;
   String publishedAt;
   String content;
+
   ArticleDataModel({
     required this.source,
-    this.author,
+    required this.author,
     required this.title,
     required this.description,
     required this.url,
-    this.urlToImage,
+    required this.urlToImage,
     required this.publishedAt,
     required this.content,
   });
@@ -21,13 +22,13 @@ class ArticleDataModel {
   factory ArticleDataModel.fromJson(Map<String, dynamic> json) {
     return ArticleDataModel(
       source: Source.fromJson(json['source']),
-      author: json['author'] as String?,
-      title: json['title'] as String,
-      description: json['description'] as String,
-      url: json['url'] as String,
-      urlToImage: json['urlToImage'] as String?,
-      publishedAt: json['publishedAt'] as String,
-      content: json['content'] as String,
+      author: json['author'] as String? ?? 'Unknown', 
+      title: json['title'] as String? ?? 'No Title', 
+      description: json['description'] as String? ?? 'No Description', 
+      url: json['url'] as String? ?? '', 
+      urlToImage: json['urlToImage'] as String? ?? '', 
+      publishedAt: json['publishedAt'] as String? ?? '', 
+      content: json['content'] as String? ?? '', 
     );
   }
 }

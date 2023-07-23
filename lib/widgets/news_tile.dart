@@ -1,7 +1,16 @@
+import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:news_app/Model/article_model.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class NewsTile extends StatelessWidget {
+    launchURL(Uri url) async {
+    if (await canLaunchUrl(url)){
+      await launchUrl(url);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
   final ArticleDataModel articleDataModel;
   const NewsTile({
     Key? key,
@@ -25,27 +34,32 @@ class NewsTile extends StatelessWidget {
             width: double.maxFinite,
             decoration: BoxDecoration(
               image: DecorationImage(
-                image: NetworkImage(articleDataModel.urlToImage ?? ''),
+                image: NetworkImage(articleDataModel.urlToImage),
                 fit: BoxFit.cover,
               ),
             ),
           ),
           const SizedBox(height: 20,),
           Text(
-            articleDataModel.title ?? 'No title available',
+            articleDataModel.title,
             style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
           ),
-          Text(articleDataModel.description ?? 'No description available'),
+          Text(articleDataModel.description),
           const SizedBox(height: 20,),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                '\$ ${articleDataModel.author ?? 'Unknown'}',
-                style: const TextStyle(fontSize: 18,),
+              Flexible(
+                child: Text(
+                  overflow: TextOverflow.ellipsis,
+                  articleDataModel.author,
+                  maxLines: 1,
+                  style: const TextStyle(fontSize: 18,),
+                ),
               ),
               Row(
                 children: [
+                  
                   IconButton(
                     onPressed: () {
                       // Add your favorite action here
@@ -56,12 +70,34 @@ class NewsTile extends StatelessWidget {
                     onPressed: () {
                       // Add your shopping cart action here
                     },
-                    icon: const Icon(Icons.shopping_cart_outlined),
+                    icon: const Icon(Icons.bookmark_border_outlined),
                   ),
                 ],
               ),
             ],
           ),
+          Padding(
+            padding: const EdgeInsets.only(right: 10),
+            child: Row(
+              
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
+                  children: [
+                    const Icon(Icons.calendar_today_outlined),
+                    Text(articleDataModel.publishedAt),
+                  ],
+                ),
+                ElevatedButton(onPressed: (){
+                  Uri url = Uri.parse(articleDataModel.url);
+                   log(url.toString());
+                  launchURL(url);
+                }, child: Text("Read More"), style: ElevatedButton.styleFrom(primary: Colors.black),
+                
+                )
+              ],
+            ),
+          )
         ],
       ),
     );
